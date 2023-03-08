@@ -13,7 +13,7 @@
  *  
  *  @date 07/03/23
  *  
- *  @brief Injeta uma DLL em um processo. Referências:
+ *  @brief Injects a DLL into a process. References:
  *      https://www.youtube.com/watch?v=KCtLiBnlpk4
  *      https://cocomelonc.github.io/tutorial/2021/09/20/malware-injection-2.html
  *  
@@ -23,13 +23,20 @@
 #include <tlhelp32.h>
 #include <iostream>
 
+/**
+ * @brief Returns the pID of a target process. 
+ *
+ * @param [char*] target The name of process (something like "main.exe")
+ *
+ * @return [int] The pID of the process.
+ */
 int getProcId( char* target ) {
     DWORD pID = 0;
     PROCESSENTRY32 pe32;
     pe32.dwSize = sizeof( PROCESSENTRY32 );
     HANDLE hSnapshot = CreateToolhelp32Snapshot( TH32CS_SNAPPROCESS, 0 );
     do {
-        // Compara o nome do processo para injetar com os existentes na lista de processos
+        // Compares the name of the process with passed argument; to get it's pID
         if ( strcmp((char*)pe32.szExeFile, target) == 0) {
             CloseHandle( hSnapshot );
             pID = pe32.th32ProcessID;
@@ -41,51 +48,50 @@ int getProcId( char* target ) {
 }
 
 int main( int argc, char* argv[] ) {
-    char* process = "main.exe";         // Processo para injetar
-    int pID = getProcId( process );     // pID do processo
+    char* process = "main.exe";         // The process to be injected
+    int pID = getProcId( process );     // Let's take the pID of it
     
     if ( pID == 0 ) {
-        std::cout << "Erro: Processo não está rodando!";
+        std::cout << "Error: Target process is not running!" << std::endl;
         return 0;
     } else {
-        std::cout << process <<  " está executando com o pID: " << pID << std::endl;
+        std::cout << process <<  " is running with pID " << pID << std::endl;
     }
 
-    char dll[] = "inject.dll";      // Nome da DLL para injetar
-    char dllPath[MAX_PATH] = {0};   // FullPath da DLL
+    char dll[] = "inject.dll";      // Path to the DLL to inject
+    char dllPath[MAX_PATH] = {0};   // FullPath of the DLL
     GetFullPathNameA( dll, MAX_PATH, dllPath, NULL );
 
-    // Abrindo um processo e alocando memória para a DLL
     HANDLE hProcess = OpenProcess( PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, FALSE, pID );
     if( !hProcess ) {
-        std::cout << "Erro ao abrir o processo.";
+        std::cout << "Error when opening the process." << std::endl;
         return 0;
     }
 
     LPVOID pszLibFileRemote = VirtualAllocEx( hProcess, NULL, strlen( dllPath ) + 1, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE );
-
+    
     if( !pszLibFileRemote ) {
-        std::cout << "Erro: não foi possível alocar memória para a thread.";
+        std::cout << "Error: couldn't alloc memory to the thread." << std::endl;
         return 0;
     } else {
-        std::cout << "Memória alocada em " << pszLibFileRemote << std::endl;
+        std::cout << "Memory allocated at " << pszLibFileRemote << std::endl;
     }
-
-    // Escrevendo o nome da DLL no processo alvo e criando uma remote thread para ela ser iniciada.
+    
+    // Writing the name of DLL in the target process and creates a remote thread to be started.
     bool isWriteOK = WriteProcessMemory( hProcess, pszLibFileRemote, dllPath, strlen( dllPath ) + 1, NULL );
     if (!isWriteOK ) {
-        std::cout << "Erro: não foi possível escrever na memória do processo.";
+        std::cout << "Error: couldn't possible to write in process memory." << std:endl;
         return 0;
     }
 
     HANDLE handleThread = CreateRemoteThread( hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)LoadLibraryA, pszLibFileRemote, 0, NULL);
 
     if ( !handleThread ) {
-        std::cout << "Erro: Thread remota não pode ser criada!" << std::endl;
+        std::cout << "Error: Remote thread could not be created!" << std::endl;
         std::cout << GetLastError();
         return 0;
     } else {
-        std::cout << "Thread criada." << std::endl;
+        std::cout << "Created thread." << std::endl;
     }
 
     WaitForSingleObject( handleThread, INFINITE );
