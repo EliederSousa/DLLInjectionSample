@@ -13,13 +13,19 @@
  *  
  *  @date 07/03/23
  *  
- *  @brief  DLL a ser injetada no processo. Compile com:
+ *  @brief  DLL to be injected in a process. You can compile with:
  *          g++ inject.cpp -shared -mwindows -lmingw32 -o inject.dll
  *  
  */ 
 #include <Windows.h>
 #include <iostream>
 
+/**
+ * @brief Allows the console output from the injected DLL.
+ *
+ * @return void
+ */
+This function allows the console outputs from the injected DLL.
 void getConsoleOutput() {
     AllocConsole();
     FILE *f = new FILE();
@@ -27,11 +33,21 @@ void getConsoleOutput() {
     std::cout.clear();
 }
 
+/**
+ * @brief Creates a thread that runs inside the allocated memory process. All your logic goes here.
+ *
+ * @return  DWORD
+ */
 DWORD WINAPI MainThread( LPVOID param ) {
     std::cout << "Oi! Sou uma dll injetada :)\n";
     return 0;
 }
 
+/**
+ * @brief This function is the entry point (main), and it's called in order to attach a thread into the target process. 
+ *
+ * @return bool
+ */
 bool APIENTRY DllMain( HMODULE hModule, DWORD dwReason, LPVOID lpReserved ) {
     if ( dwReason == DLL_PROCESS_ATTACH ) {
         CreateThread( 0, 0, MainThread, hModule, 0, 0 );

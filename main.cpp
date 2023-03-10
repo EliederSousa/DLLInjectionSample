@@ -1,5 +1,5 @@
 /** 
- *  injector.cpp
+ *  main.cpp
  *  
  *  Copyright (c) 2023, Elieder Sousa
  *  eliedersousa<at>gmail<dot>com
@@ -13,7 +13,7 @@
  *  
  *  @date 07/03/23
  *  
- *  @brief  Programa exemplo para testar injeção de uma DLL via VirtualAllocEx().
+ *  @brief  Example of program to be hacked using a DLL injection.
  *  
  */
 
@@ -24,9 +24,9 @@ int main() {
     int secret = 7;
     while ( true ) {
         if( secret < 7) {
-            std::cout << "SECRET: Este frase nunca deveria ser chamada!\n";
+            std::cout << "SECRET: This should not be called!" << std::endl;
         } else {
-            std::cout << "Condicao normal do programa. Tente novamente!\n";
+            std::cout << "Normal condition of program. Try again." << std::endl;
         }
         Sleep(2000);
     }
