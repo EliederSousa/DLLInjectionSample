@@ -10,7 +10,7 @@ namespace IniLoader {
     /**
      * @brief Changes the default section of the INI file.
      * 
-     * @param string sectionParam  A string that represents the default section of a INI file.
+     * @param sectionParam string - A string that represents the default section of a INI file.
      * 
      * @return void
      * @example
@@ -23,7 +23,7 @@ namespace IniLoader {
     /**
      * @brief Loads an INI file.
      * 
-     * @param string fileUrlParam    The path to the file to be readed.
+     * @param fileUrlParam string - The path to the file to be readed.
      * 
      * @return void
      * @example
@@ -41,9 +41,9 @@ namespace IniLoader {
     /**
      * @brief Gets a value readed from the INI file.
      * 
-     * @param string section        The section where the value is. Something like "default".
-     * @param string variableName   The name of the variable to be retrieved inside INI file.
-     * @param int destinationVar    The variable that will store the value.
+     * @param section - string - The section where the value is. Something like "default".
+     * @param variableName string - The name of the variable to be retrieved inside INI file.
+     * @param destinationVar int& - The variable that will store the value.
      * 
      * @return void
      * @example 

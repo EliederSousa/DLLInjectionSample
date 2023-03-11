@@ -26,9 +26,9 @@
 /**
  * @brief Returns the pID of a target process. 
  *
- * @param [char*] target The name of process (something like "main.exe")
+ * @param target char* - The name of process (something like "main.exe")
  *
- * @return [int] The pID of the process.
+ * @return int The pID of the process.
  */
 int getProcId( char* target ) {
     DWORD pID = 0;
@@ -80,7 +80,7 @@ int main( int argc, char* argv[] ) {
     // Writing the name of DLL in the target process and creates a remote thread to be started.
     bool isWriteOK = WriteProcessMemory( hProcess, pszLibFileRemote, dllPath, strlen( dllPath ) + 1, NULL );
     if (!isWriteOK ) {
-        std::cout << "Error: couldn't possible to write in process memory." << std:endl;
+        std::cout << "Error: couldn't possible to write in process memory." << std::endl;
         return 0;
     }
 

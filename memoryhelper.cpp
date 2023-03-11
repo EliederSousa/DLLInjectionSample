@@ -27,7 +27,7 @@ template <typename T> class MemoryPointer {
 
     public:
     /**
-     * @brief Creates a pointer.
+     * @brief Constructor - Creates a pointer.
      * @param DWORD_PTR address_param The address that we work with.
      */
     MemoryPointer() {
@@ -40,8 +40,8 @@ template <typename T> class MemoryPointer {
     }
     
     /**
-     * @brief Creates a pointer.
-     * @param DWORD_PTR address_param The address that we work with.
+     * @brief Constructor - Creates a pointer.
+     * @param address_param DWORD_PTR - The address that we work with.
      */
     MemoryPointer( DWORD_PTR address_param ) {
         offset = address_param;
@@ -106,22 +106,33 @@ HMODULE getBaseAddress() {
 }
 
 /**
+ * @brief Reads the value in specified address, storing the value.
  * 
-void protected_read( void* dest, void* src, int n ) {
+ * @param dest void* - The variable to store the value.
+ * @param src void* - The address to be readed.
+ * @param size int - How many bytes will be readed. 
+ */
+void protected_read( void* dest, void* src, int size ) {
     DWORD oldProtect = 0;
-    VirtualProtect( dest, n, PAGE_EXECUTE_READWRITE, &oldProtect);
-    memcpy(dest, src, n);
-    VirtualProtect( dest, n, oldProtect, &oldProtect );
+    VirtualProtect( dest, size, PAGE_EXECUTE_READWRITE, &oldProtect);
+    memcpy(dest, src, size);
+    VirtualProtect( dest, size, oldProtect, &oldProtect );
 }
 
+/**
+ * @brief Reads bytes using a MemoryPointer object.
+ * 
+ * @tparam T - Type of value stored in MemoryPointer.
+ * @param p MemoryPointer<T> - The MemoryPointer object to be used.
+ */
 template <typename T> void readBytes( MemoryPointer<T> p ) {
     protected_read( p.value_pointer, (void*)p.address, p.size );
 }
 
 /**
  * @brief Write bytes in memory using a MemoryPointer.
- * @param [MemoryPointer] pointer A MemoryPointer object with the address to write the bytes.
- * @param [void*] patch The bytes to write, passed as a pointer to void (no type)
+ * @param pointer MemoryPointer<T> - A MemoryPointer object with the address to write the bytes.
+ * @param patch void* - The bytes to write, passed as a pointer to void (no type)
  * @return void 
  */
 template <typename T> void writeBytes( MemoryPointer<T> p, void* patch ) {

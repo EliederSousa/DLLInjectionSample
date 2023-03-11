@@ -25,7 +25,6 @@
  *
  * @return void
  */
-This function allows the console outputs from the injected DLL.
 void getConsoleOutput() {
     AllocConsole();
     FILE *f = new FILE();
