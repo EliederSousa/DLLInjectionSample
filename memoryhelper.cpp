@@ -2,7 +2,6 @@
 #include <string.h>
 #include <iostream>
 #include <variant>
-#include <string.h>
 #include <vector>
 
 template <typename T>class MemoryPointer;

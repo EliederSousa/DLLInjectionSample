@@ -1,5 +1,5 @@
 /** 
- *  inject.cpp
+ *  main.cpp
  *  
  *  Copyright (c) 2023, Elieder Sousa
  *  eliedersousa<at>gmail<dot>com
@@ -13,43 +13,22 @@
  *  
  *  @date 07/03/23
  *  
- *  @brief  DLL to be injected in a process. You can compile with:
- *          g++ inject.cpp -shared -mwindows -lmingw32 -o inject.dll
+ *  @brief  Example of program to be hacked using a DLL injection.
  *  
- */ 
-#include <Windows.h>
+ */
+
 #include <iostream>
+#include <windows.h>
 
-/**
- * @brief Allows the console output from the injected DLL.
- *
- * @return void
- */
-void getConsoleOutput() {
-    AllocConsole();
-    FILE *f = new FILE();
-    freopen_s(&f, "CONOUT$", "w", stdout);
-    std::cout.clear();
-}
-
-/**
- * @brief Creates a thread that runs inside the allocated memory process. All your logic goes here.
- *
- * @return  DWORD
- */
-DWORD WINAPI MainThread( LPVOID param ) {
-    std::cout << "Oi! Sou uma dll injetada :)\n";
-    return 0;
-}
-
-/**
- * @brief This function is the entry point (main), and it's called in order to attach a thread into the target process. 
- *
- * @return bool
- */
-bool APIENTRY DllMain( HMODULE hModule, DWORD dwReason, LPVOID lpReserved ) {
-    if ( dwReason == DLL_PROCESS_ATTACH ) {
-        CreateThread( 0, 0, MainThread, hModule, 0, 0 );
+int main() {
+    int secret = 7;
+    while ( true ) {
+        if( secret < 7) {
+            std::cout << "SECRET: This should not be called!" << std::endl;
+        } else {
+            std::cout << "Normal condition of program. Try again." << std::endl;
+        }
+        Sleep(2000);
     }
-    return true;
+    return 0;
 }

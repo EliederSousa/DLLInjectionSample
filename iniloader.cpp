@@ -26,8 +26,7 @@ namespace IniLoader {
      * @param fileUrlParam string - The path to the file to be readed.
      * 
      * @return void
-     * @example
-     *      IniLoader::loadFile("config.ini");
+     * @example IniLoader::loadFile("config.ini");
      */
     void loadFile( std::string fileUrlParam ){
         fileUrl = fileUrlParam;
@@ -43,14 +42,14 @@ namespace IniLoader {
      * 
      * @param section - string - The section where the value is. Something like "default".
      * @param variableName string - The name of the variable to be retrieved inside INI file.
-     * @param destinationVar int& - The variable that will store the value.
+     * @param destinationVar auto& - The variable that will store the value.
      * 
      * @return void
      * @example 
             int version; // Assuming that version is a number variable.
             IniLoader::getValue("config", "version", version);
      */
-    void getValue( std::string section, std::string variableName, int& destinationVar ) {
+    void getValue( std::string section, std::string variableName, auto& destinationVar ) {
         inipp::get_value(ini.sections[section], variableName, destinationVar);
     }
 
