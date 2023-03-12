@@ -1,5 +1,5 @@
 ## DLLInjectionSample  
-This is a simple project to create an game hacking enviroment. We will use [MinHook](https://github.com/TsudaKageyu/minhook) to help hooking/detouring functions.
+This is a simple project to create an game hacking enviroment. We will use [MinHook](https://github.com/TsudaKageyu/minhook) to help hooking/detouring functions, [inipp](https://github.com/mcmtroffaes/inipp) to read .ini files.
 
 
 * Compile the injector file (_injector/injector.cpp_): 
