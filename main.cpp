@@ -19,8 +19,7 @@
  */ 
 #include <Windows.h>
 #include <iostream>
-#include <fstream>
-#include "iniloader.cpp"
+#include "logic.cpp"
 
 /**
  * @brief Allows the console output from the injected DLL.
@@ -40,11 +39,8 @@ void getConsoleOutput() {
  * @return  DWORD
  */
 DWORD WINAPI MainThread( LPVOID param ) {
-    std::string val;
-    IniLoader::loadFile("test.ini");
-    IniLoader::getValue("default", "author", val);
-    
-    std::cout << val << std::endl;
+    getConsoleOutput();
+    Logic::init();
     return 0;
 }
 

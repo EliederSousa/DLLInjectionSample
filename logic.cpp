@@ -1,4 +1,4 @@
-/*#ifdef _UNICODE
+#ifdef _UNICODE
 typedef wchar_t TCHAR;
 #else
 typedef char TCHAR;
@@ -12,4 +12,10 @@ typedef const TCHAR* LPCTSTR;
 #include <random>
 #include "iniloader.cpp"
 #include "memoryhelper.cpp"
-#include "includes/MinHook.h"*/
+#include "includes/MinHook.h"
+
+namespace Logic {
+    void init() {
+        std::cout << "oi" << std::endl;
+    }
+}
