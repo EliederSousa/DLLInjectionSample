@@ -16,6 +16,6 @@ typedef const TCHAR* LPCTSTR;
 
 namespace Logic {
     void init() {
-        std::cout << "oi" << std::endl;
+        std::cout << "Hello from injected DLL :)" << std::endl;
     }
 }

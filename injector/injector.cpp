@@ -48,7 +48,7 @@ int getProcId( char* target ) {
 }
 
 int main( int argc, char* argv[] ) {
-    char* process = "main.exe";         // The process to be injected
+    char* process = "test.exe";         // The process to be injected
     int pID = getProcId( process );     // Let's take the pID of it
     
     if ( pID == 0 ) {
